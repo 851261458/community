@@ -1,9 +1,8 @@
 package com.mju.band3.community.Provider;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.mju.band3.community.Entity.AccessTokenDTO;
-import com.mju.band3.community.Entity.GitHupUser;
+import com.mju.band3.community.DTO.AccessTokenDTO;
+import com.mju.band3.community.DTO.GitHupUser;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 

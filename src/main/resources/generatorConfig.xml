@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- 指定MyBatis生成器的运行环境 -->
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <!--让自动生成的各个文件没有瞎鸡巴注释-->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"></property>
+        </commentGenerator>
+
+
+        <!-- jdbcConnection：用来说明如何连接到目标数据库 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/community?allowMultiQueries=true"
+                        userId="root" password="root">
+        </jdbcConnection>
+
+        <!-- 是否强制转换bigdecimal -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!--
+                     javaModelGenerator：指定javaBean的生成策略
+                     targetPackage="com.queen.mybatis.bean"：目标包名
+             targetProject="\MBGTestProject\src"：目标工程
+                -->
+        <javaModelGenerator targetPackage="com.mju.band3.community.Model"
+                            targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- sqlMapGenerator：sql映射生成策略： -->
+        <sqlMapGenerator targetPackage="mybatis\mapper"
+                         targetProject=".\src\main\resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- javaClientGenerator:指定mapper接口所在的位置 -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.mju.band3.community.Mapper" targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!-- 指定要逆向分析哪些表：根据表要创建javaBean -->
+        <!--<table tableName="comment" domainObjectName="Comment"></table>-->
+        <!--<table tableName="tbl_dept" domainObjectName="Department"></table>-->
+        <table tableName="notification" domainObjectName="Notification"></table>
+    </context>
+</generatorConfiguration>

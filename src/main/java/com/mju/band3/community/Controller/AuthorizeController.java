@@ -1,16 +1,16 @@
 package com.mju.band3.community.Controller;
 
-import com.mju.band3.community.Entity.AccessTokenDTO;
-import com.mju.band3.community.Entity.GitHupUser;
+import com.mju.band3.community.DTO.AccessTokenDTO;
+import com.mju.band3.community.DTO.GitHupUser;
 import com.mju.band3.community.Mapper.UserMapper;
 import com.mju.band3.community.Model.User;
 import com.mju.band3.community.Provider.GitHupProvider;
+import com.mju.band3.community.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,11 +27,11 @@ public class AuthorizeController {
     @Autowired
     GitHupProvider gitHupProvider;
     @Autowired
-    UserMapper userMapper;
+    UserService userService;
 
     @GetMapping(value = "/callback")
     public String callBack(@RequestParam(name ="code")String code,
-                           @RequestParam(name="state")String state,HttpServletResponse response){
+                           @RequestParam(name="state")String state, HttpServletResponse response){
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(setClientId);
         accessTokenDTO.setClient_secret(setClientSecret);
@@ -46,10 +46,11 @@ public class AuthorizeController {
             user.setToken(token);
             user.setName(gitHupUser.getName());
             user.setAccountId(String.valueOf(gitHupUser.getId()));
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
-            userMapper.insert(user);
-            response.addCookie(new Cookie("token",token));
+            user.setAvatarUrl(gitHupUser.getAvatarUrl());
+            userService.insertOrUpdate(user);
+            Cookie cookie = new Cookie("token",token);
+            cookie.setMaxAge(60*60*24*7);
+            response.addCookie(cookie);
             return "redirect:/";
         }else {
             return "redirect:/";
@@ -57,5 +58,18 @@ public class AuthorizeController {
 
 
     }
+
+
+    @GetMapping(value = "/logout")
+    public String logout(HttpServletRequest request,HttpServletResponse response){
+        request.getSession().removeAttribute("user");
+        Cookie cookie=new Cookie("token",null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        return "redirect:/";
+    }
+
+
 
 }
