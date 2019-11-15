@@ -8,15 +8,7 @@
     <link rel="stylesheet" href="css/community.css">
    <script type="text/javascript" src="webjars/jquery/3.3.1/jquery.min.js"></script>
    <script src="js/bootstrap.min.js" type="text/javascript"></script>
-    <script type="application/javascript">
-        window.onload = function () {
-            var closable = window.localStorage.getItem("closable");
-            if (closable == "true") {
-                window.close();
-                window.localStorage.removeItem("closable");
-            }
-        }
-    </script>
+
 </head>
 <body>
 <div th:insert="~{navigation :: nav}"></div>
@@ -43,25 +35,25 @@
                 <ul class="pagination">
                     <li th:if="${!pageInfo.isFirstPage}">
 
-                        <a href="/?page=1" aria-label="Previous">
+                        <a th:href="@{/search(page=1,search=${search})}" aria-label="Previous">
                             <span aria-hidden="true">首页</span>
                         </a>
                     </li>
                     <li th:if="${pageInfo.hasPreviousPage}">
-                        <a th:href="@{/(page=${pageInfo.pageNum-1})}" aria-label="Previous">
+                        <a th:href="@{/search(page=${pageInfo.pageNum-1},search=${search})}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <li th:each="page:${pageInfo.navigatepageNums}" th:class="${pageInfo.pageNum==page}?'active':''">
-                        <a href="/" th:href="@{/(page=${page})}" th:text="${page}" ></a>
+                        <a href="/" th:href="@{/search(page=${page},search=${search})}" th:text="${page}" ></a>
                     </li>
                     <li th:if="${pageInfo.hasNextPage}">
-                        <a th:href="@{/(page=${pageInfo.pageNum+1})}" aria-label="Next">
+                        <a th:href="@{/search(page=${pageInfo.pageNum+1},search=${search})}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                     <li th:if="${!pageInfo.isLastPage}">
-                        <a th:href="@{/(page=${pageInfo.pages})}" aria-label="Next">
+                        <a th:href="@{/search(page=${pageInfo.pages},search=${search})}" aria-label="Next">
                             <span aria-hidden="true">末页</span>
                         </a>
                     </li>

@@ -39,6 +39,15 @@
         order by gmt_create desc limit 20
     </select>
 
+    <select id="search" resultMap="getQuesAndUser">
+
+        select question.*,user.avatar_url from question, user
+        where question.title like concat('%',#{search},'%')
+        and question.creator=user.account_id order by gmt_create desc
+    </select>
+
+
+
 
 
 </mapper>

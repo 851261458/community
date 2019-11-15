@@ -35,4 +35,6 @@ public interface QuestionMapper {
     void updateCommentCount(Integer id);
 
     List<QuestionDTO> selectRelated(QuestionDTO questionDTO);
+
+    List<QuestionDTO> search(String search);
 }

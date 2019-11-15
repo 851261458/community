@@ -6,6 +6,7 @@ import com.mju.band3.community.Mapper.UserMapper;
 import com.mju.band3.community.Model.User;
 import com.mju.band3.community.Provider.GitHupProvider;
 import com.mju.band3.community.Service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -15,7 +16,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
-
+@Slf4j
 @Controller
 public class AuthorizeController {
     @Value("${githup.setClient.id}")
@@ -53,6 +54,7 @@ public class AuthorizeController {
             response.addCookie(cookie);
             return "redirect:/";
         }else {
+            log.error("AuthorizeController-callBack-gitHupUser-null ,{}",gitHupUser);
             return "redirect:/";
         }
 

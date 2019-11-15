@@ -63,6 +63,10 @@ public class QuestionService {
         return questionMapper.selectRelated(questionDTO);
     }
 
+    public List<QuestionDTO> search(String search) {
+        return questionMapper.search(search);
+    }
+
 //    public  PageDTO selectAll(Integer page, Integer size) {
 //        Integer totalCount = questionMapper.count();
 //        Integer totalPage;
