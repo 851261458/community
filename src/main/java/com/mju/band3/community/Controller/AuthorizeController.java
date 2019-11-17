@@ -39,6 +39,7 @@ public class AuthorizeController {
         accessTokenDTO.setCode(code);
         accessTokenDTO.setState(state);
         accessTokenDTO.setRedirect_uri(setRedirectUri);
+        System.out.println(accessTokenDTO);
         String accessToken = gitHupProvider.getAccessToken(accessTokenDTO);
         System.out.println("accessToken----》"+accessToken);
         GitHupUser gitHupUser = gitHupProvider.getUser(accessToken);
