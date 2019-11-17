@@ -33,8 +33,6 @@ public class AuthorizeController {
     @GetMapping(value = "/callback")
     public String callBack(@RequestParam(name ="code")String code,
                            @RequestParam(name="state")String state, HttpServletResponse response){
-        System.out.println("code"+code);
-        System.out.println("state"+state);
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(setClientId);
         accessTokenDTO.setClient_secret(setClientSecret);
@@ -42,7 +40,9 @@ public class AuthorizeController {
         accessTokenDTO.setState(state);
         accessTokenDTO.setRedirect_uri(setRedirectUri);
         String accessToken = gitHupProvider.getAccessToken(accessTokenDTO);
+        System.out.println("accessToken----》"+accessToken);
         GitHupUser gitHupUser = gitHupProvider.getUser(accessToken);
+        System.out.println("GitHupUser-------->"+gitHupUser);
         if (gitHupUser!=null){
             User user=new User();
             String token=UUID.randomUUID().toString();
