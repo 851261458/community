@@ -88,6 +88,31 @@ public class Notification {
     }
 
     public void setOuterTitle(String outerTitle) {
+
         this.outerTitle = outerTitle == null ? null : outerTitle.trim();
+    }
+
+
+    public Notification() {
+    }
+
+    public Notification(Long id, Integer status) {
+        this.id = id;
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Notification{" +
+                "id=" + id +
+                ", notifier=" + notifier +
+                ", receiver=" + receiver +
+                ", outerid=" + outerid +
+                ", type=" + type +
+                ", gmtCreate=" + gmtCreate +
+                ", status=" + status +
+                ", notifierName='" + notifierName + '\'' +
+                ", outerTitle='" + outerTitle + '\'' +
+                '}';
     }
 }

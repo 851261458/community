@@ -1,6 +1,8 @@
 package com.mju.band3.community.interceptor;
 
+import com.mju.band3.community.Mapper.NotificationMapper;
 import com.mju.band3.community.Mapper.UserMapper;
+import com.mju.band3.community.Model.NotificationExample;
 import com.mju.band3.community.Model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 public class SessionInterceptor implements HandlerInterceptor {
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    NotificationMapper notificationMapper;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Cookie[] cookies = request.getCookies();
@@ -24,6 +28,13 @@ public class SessionInterceptor implements HandlerInterceptor {
                     User user=userMapper.findByToken(token);
                     if (user!=null){
                         request.getSession().setAttribute("user",user);
+                        NotificationExample example = new NotificationExample();
+                        example.createCriteria()
+                                .andReceiverEqualTo(Long.valueOf(user.getAccountId()))
+                                .andNotifierNotEqualTo(Long.valueOf(user.getAccountId()))
+                                .andStatusEqualTo(0);
+                        long l = notificationMapper.countByExample(example);
+                        request.getSession().setAttribute("UnRead",l);
                     }
                     break;
                 }

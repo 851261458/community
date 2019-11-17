@@ -40,17 +40,22 @@ public class CommentService {
         if (comment.getType() == null || !CommentTypeEnum.isExist(comment.getType())) {
             throw new CustomizeException(CustomizeErrorCode.TYPE_PARAM_WRONG);
         }
+
+
         if (comment.getType() == CommentTypeEnum.COMMENT.getType()) {
             // 回复评论
             Comment dbComment = commentMapper.selectByPrimaryKey(comment.getParentId());
+            Question question = questionMapper.selectByPrimaryKey(dbComment.getParentId());
             if (dbComment == null) {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insert(comment);
 
             commentMapper.incCommentCount(comment.getParentId());
+
+
             //创建通知
-            createNotify(comment, NotificationEnum.REPLY_COMMENT.getType(), dbComment.getCommentator().longValue());
+            createNotify(comment, NotificationEnum.REPLY_COMMENT.getType(), dbComment.getCommentator().longValue(),question.getTitle());
         }else {
             // 回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
@@ -62,19 +67,24 @@ public class CommentService {
 
             questionMapper.updateCommentCount(question.getId());
 
-            createNotify(comment, NotificationEnum.REPLY_QUESTION.getType(), question.getCreator().longValue());
+
+
+            createNotify(comment, NotificationEnum.REPLY_QUESTION.getType(), question.getCreator().longValue(),question.getTitle());
         }
 
         }
 
-    private void createNotify(Comment comment, int type, Long receiver) {
+    private void createNotify(Comment comment, int type, Long receiver,String title) {
+        String nameByAccount_id = userMapper.findNameByAccount_Id(comment.getCommentator());
         Notification notification = new Notification();
+        notification.setNotifierName(nameByAccount_id);
         notification.setGmtCreate(System.currentTimeMillis());
         notification.setType(type);
         notification.setOuterid(comment.getParentId().intValue());
         notification.setNotifier(comment.getCommentator().longValue());
         notification.setReceiver(receiver);
         notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+        notification.setOuterTitle(title);
         notificationMapper.insert(notification);
     }
 
@@ -124,4 +134,8 @@ public class CommentService {
         return commentReviewDTOS;
     }
 
+    public Long selectParentIdByOutId(Integer outerid) {
+        Comment comment = commentMapper.selectByPrimaryKey(outerid.longValue());
+        return  comment.getParentId();
+    }
 }

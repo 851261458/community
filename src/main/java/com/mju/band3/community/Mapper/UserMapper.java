@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.data.relational.core.sql.In;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface UserMapper {
     void update(User byAccount_id);
 
     List<User> selectUserIdIn(List<Integer> userId);
+    @Select("select name from user where account_id=#{commentator}")
+    String findNameByAccount_Id(Integer commentator);
 }

@@ -3,6 +3,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mju.band3.community.DTO.PageDTO;
 import com.mju.band3.community.DTO.QuestionDTO;
+import com.mju.band3.community.Model.Notification;
 import com.mju.band3.community.Model.User;
 import com.mju.band3.community.Service.NotificationService;
 import com.mju.band3.community.Service.QuestionService;
@@ -45,10 +46,12 @@ public class ProfileController {
             PageInfo pageInfo=new PageInfo(list,5);
             model.addAttribute("pageInfo",pageInfo);
         } else if ("replies".equals(action)) {
-
-//            model.addAttribute("section", "replies");
-//            model.addAttribute("pagination", paginationDTO);
-//            model.addAttribute("sectionName", "最新回复");
+            PageHelper.startPage(page,size);
+            List<Notification> notificationList=notificationService.selectReceiveMsgWithoutYourself(user.getAccountId());
+            PageInfo pageInfo=new PageInfo(notificationList,5);
+            model.addAttribute("section", "replies");
+            model.addAttribute("sectionName", "最新回复");
+            model.addAttribute("pageInfo",pageInfo);
         }
 
         return "profile";
