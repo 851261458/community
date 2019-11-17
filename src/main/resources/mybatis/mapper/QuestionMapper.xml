@@ -27,7 +27,7 @@
 </select>
 
     <select id="selectRelated" resultMap="getQuesAndUser">
-        select * from QUESTION
+        select * from question
         <where>
             <if test="id != null">
                 and id != #{id}
