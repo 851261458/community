@@ -33,8 +33,8 @@ public class AuthorizeController {
     @GetMapping(value = "/callback")
     public String callBack(@RequestParam(name ="code")String code,
                            @RequestParam(name="state")String state, HttpServletResponse response){
-        System.out.println(code);
-        System.out.println(state);
+        System.out.println("code"+code);
+        System.out.println("state"+state);
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(setClientId);
         accessTokenDTO.setClient_secret(setClientSecret);
