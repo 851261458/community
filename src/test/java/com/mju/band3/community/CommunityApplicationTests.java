@@ -2,6 +2,7 @@ package com.mju.band3.community;
 
 import com.mju.band3.community.Mapper.QuestionMapper;
 import com.mju.band3.community.enums.CommentTypeEnum;
+import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.xml.ConfigurationParser;
@@ -54,9 +55,11 @@ class CommunityApplicationTests {
 
     @Test
     public void fun4(){
-        Long a=5l;
-        int i = a.intValue();
-        System.out.println(i);
+        String a="java,python";
+        String[] split = StringUtils.split(a, ",");
+        for (String s : split) {
+            System.out.println(s);
+        }
 
     }
 

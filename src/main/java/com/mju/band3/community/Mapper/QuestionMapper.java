@@ -1,7 +1,6 @@
 package com.mju.band3.community.Mapper;
 
 import com.mju.band3.community.DTO.QuestionDTO;
-import com.mju.band3.community.Model.Comment;
 import com.mju.band3.community.Model.Question;
 import org.apache.ibatis.annotations.*;
 
@@ -37,4 +36,6 @@ public interface QuestionMapper {
     List<QuestionDTO> selectRelated(QuestionDTO questionDTO);
 
     List<QuestionDTO> search(String search);
+    @Select("select * from question limit #{offset},#{limit}")
+    List<Question> selectWithRowsbounds(@Param("offset")int  offset,@Param("limit") int limit);
 }

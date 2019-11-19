@@ -3,9 +3,11 @@ package com.mju.band3.community;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @MapperScan("com.mju.band3.community.Mapper")
+@EnableScheduling
 public class CommunityApplication {
 
     public static void main(String[] args) {
